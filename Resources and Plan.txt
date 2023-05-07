@@ -1,0 +1,7 @@
+https://www.gamedeveloper.com/design/loot-drop-best-practices
+
+
+Loot rarity drop system
+Weapon Types with randomized stats
+Tool tip display for each item on ground
+Fade in tool tip

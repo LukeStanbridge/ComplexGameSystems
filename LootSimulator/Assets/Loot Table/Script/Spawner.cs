@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Loot.SpawnDrop(this.transform);
+            Loot.SpawnDrop(this.transform, RandomDropCount, DropRange);
         }
     }
 }
