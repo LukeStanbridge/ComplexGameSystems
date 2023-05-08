@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a7acfa128be134b9c21ef3f2e60053, type: 3}
   m_Name: WeaponRarity
   m_EditorClassIdentifier: 
-  GuaranteedLootTable:
-  - Weight: 0
-    Drop: {fileID: 4341902967243459493, guid: 7c54b6ddd9ef04c45a0a624c9b3bbf7b, type: 3}
-    MinCountItem: 1
-    MaxCountItem: 1
+  GuaranteedLootTable: []
   OneItemFromList:
   - Weight: 60
     Drop: {fileID: 4341902967243459493, guid: 7c54b6ddd9ef04c45a0a624c9b3bbf7b, type: 3}
@@ -39,3 +35,4 @@ MonoBehaviour:
     MinCountItem: 1
     MaxCountItem: 1
   WeightToNoDrop: 40
+  item: {fileID: 0}

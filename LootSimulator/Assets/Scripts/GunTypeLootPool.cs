@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+//using System.Collections;
+//using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
-using TMPro;
+//using System.Net;
+//using TMPro;
 using UnityEngine;
 
 public class GunTypeLootPool : MonoBehaviour
@@ -13,39 +13,47 @@ public class GunTypeLootPool : MonoBehaviour
     
     private WeaponType weapon;
     [HideInInspector] public string weaponRarity;
+    [SerializeField] private Transform parentObject;
     [SerializeField] private float rarityWeaponModifier = 1.1f;
+    [SerializeField] private GameObject[] weaponPrefab;
     [SerializeField] private Stat[] weaponStatsArray; //add tooltip here
 
     [System.Serializable]
     public struct Stat
     {
         public string name;
+        public float minValue;
+        public float maxValue;
         public float value;
         public bool rarityModifiable;
         public bool weaponTypeModifiable;
+        public bool randomizable;
     }
 
     public enum WeaponType
     {
-        [Description("Hand Cannon")]
-        HandCannon,
-        [Description("Scout Rifle")]
-        ScoutRifle,
-        [Description("Auto Rifle")]
-        AutoRifle,
-        [Description("Pulse Rifle")]
-        PulseRifle,
-        [Description("Sidearm")]
-        Sidearm,
-        [Description("Submachine Gun")]
-        SMG,
-        [Description("Combat Bow")]
+        [Description("Two Handed Axe")]
+        TwoHandedAxe,
+        [Description("Bow")]
         Bow,
+        [Description("Hammer")]
+        Hammer,
+        [Description("Scythe")]
+        Scythe,
+        [Description("Chakram")]
+        Chakram,
+        [Description("Scepter")]
+        Scepter,
+        [Description("Wand")]
+        Wand,
+        [Description("Dagger")]
+        Dagger,
     }
 
     private void Awake()
     {
         weaponTypeField.weaponType = "Weapon Type: " + GenerateRandomWeaponType(); // populate text field with weapon data once they spawn
+        SpawnPrefab(weapon);
     }
 
     private void Start()
@@ -65,11 +73,11 @@ public class GunTypeLootPool : MonoBehaviour
                 WeaponRarityStatModifications(rarityWeaponModifier);
                 break;
 
-            case "Legendary":
+            case "Epic":
                 WeaponRarityStatModifications(rarityWeaponModifier);
                 break;
 
-            case "Exotic":
+            case "Legendary":
                 WeaponRarityStatModifications(rarityWeaponModifier);
                 break;
 
@@ -92,16 +100,27 @@ public class GunTypeLootPool : MonoBehaviour
     {
         for(int i = 0; i < weaponStatsArray.Length; i++) 
         {
+            if (weaponStatsArray[i].randomizable)
+            {
+                float num = UnityEngine.Random.Range(weaponStatsArray[i].minValue, weaponStatsArray[i].maxValue);
+                weaponStatsArray[i].value = num * rarityModifier;
+            }
             //modify stat values
             if (weaponStatsArray[i].rarityModifiable)
             {
-                weaponStatsArray[i].value = weaponStatsArray[i].value * rarityModifier;
+                weaponStatsArray[i].value = (float)Math.Round(weaponStatsArray[i].value * rarityModifier, 2);
             }
 
             //add name and value to tooltip text field
             weaponTypeField.weaponStat.Add(weaponStatsArray[i].name); 
             weaponTypeField.statValue.Add(weaponStatsArray[i].value);
         }
+    }
+
+    public void SpawnPrefab(WeaponType weapon)
+    {
+        GameObject spawnedWeapon = Instantiate(weaponPrefab[(int)weapon], parentObject);
+        spawnedWeapon.transform.parent = parentObject;
     }
 }
 

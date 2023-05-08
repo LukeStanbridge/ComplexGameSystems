@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
 {
     public LootDrop Loot;
     public int RandomDropCount = 1;
-    public float DropRange = .5f;
+    public float DropRange = 10f;
 
     private void Update()
     {
