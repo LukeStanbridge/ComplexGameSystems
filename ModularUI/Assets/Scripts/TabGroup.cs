@@ -5,10 +5,19 @@ using UnityEngine.UI;
 
 public class TabGroup : MonoBehaviour
 {
+    public GameObject tabButtonObj;
+    public List<string> menuOptions;
     public List<TabButton> tabButtons;
-    public PanelGroup panelGroup;
-    public MenuNavigation option;
-    public int panelNumber;
+    public TabButton selectedTab;
+
+    public void Awake()
+    {
+        for (int i = 0; i < menuOptions.Count; i++)
+        {
+            GameObject button = Instantiate(tabButtonObj, this.transform);
+           button.GetComponent<TabButton>().tabText.text = menuOptions[i];
+        }
+    }
 
     // Adds tabs to list
     public void Subscribe(TabButton button)
@@ -20,65 +29,43 @@ public class TabGroup : MonoBehaviour
 
         tabButtons.Add(button);
     }
-    // Dispaly panel
+
     public void OnTabEnter(TabButton button)
     {
-        if (panelGroup.name == "Panels" && !RetainMenu())
-        {
-            if (panelGroup != null)
-            {
-                panelGroup.SetPageIndex(tabButtons.IndexOf(button));
-            }
-        }
+        button.background.color = button.activeColour;
     }
 
     // Remove panel when not hovering over tab
     public void OnTabExit(TabButton button)
     {
-        if (panelGroup.name == "Panels" && !RetainMenu())
+        if (selectedTab == null && button != selectedTab)
         {
-            if (panelGroup != null)
-            {
-                panelGroup.SetPageIndex(0);
-            }
+            button.background.color = button.inactiveColour;
+        }
+
+        if (selectedTab != null && button == selectedTab)
+        {
+            button.background.color = button.selectedColour;
+        }
+
+        if (selectedTab != null && button != selectedTab)
+        {
+            button.background.color = button.inactiveColour;
         }
     }
 
-    // Displays body panels
     public void OnTabSelected(TabButton button)
     {
-        if (panelGroup != null)
-        {
-            // shows the menu panels section
-            if (panelGroup.name == "Panels")
-            {
-                option.MainMenuOption(button.name);
-                panelGroup.SetPageIndex(panelNumber);
-            }
-            // controls thh panel display for the to tab bar
-            else
-            {
-                panelGroup.SetPageIndex(tabButtons.IndexOf(button));
-            }
-        }
+        selectedTab = button;
+        ResetTabs();
+        button.background.color = button.selectedColour;
     }
 
-    // Used to reset tab/button panels when opening and cloasing pause menu
-    public void OnClosePauseMenu()
+    public void ResetTabs()
     {
-        if (panelGroup != null)
+        foreach (TabButton button in tabButtons)
         {
-            if (panelGroup.name == "Panels")
-            {
-                panelGroup.SetPageIndex(0);
-            }
+            button.background.color = button.inactiveColour;
         }
-    }
-
-    // Keeps certain panels displayed when tab is selected
-    public bool RetainMenu()
-    {
-        if (panelNumber == 6 || panelNumber == 7 || panelNumber == 8) return true;
-        else return false;
     }
 }
