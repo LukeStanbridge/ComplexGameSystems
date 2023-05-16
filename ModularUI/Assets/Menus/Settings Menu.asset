@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394d1daccd4dd71459891a3a0d45ea01, type: 3}
+  m_Name: Settings Menu
+  m_EditorClassIdentifier: 
+  menuOptions:
+  - menuType: 0
+    tabOption: Settings
+    panelCreation:
+    - header: Gameplay Settings
+      panelContent:
+      - contentText: Difficulty
+        slider: 0
+        dropDownMenu: 1
+        toggle: 0
+        controlKey: 
+      - contentText: Motion Blur
+        slider: 0
+        dropDownMenu: 1
+        toggle: 0
+        controlKey: 
+      - contentText: Invert Controls
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+        controlKey: 
+      - contentText: Field Of View
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: 
+    - header: Audio Settings
+      panelContent:
+      - contentText: Subtitles
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+        controlKey: 
+      - contentText: Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: 
+      - contentText: Audio Type
+        slider: 0
+        dropDownMenu: 1
+        toggle: 0
+        controlKey: 
+  - menuType: 1
+    tabOption: Controls
+    panelCreation:
+    - header: Controls
+      panelContent:
+      - contentText: Forward
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: W
+      - contentText: Back
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: S
+      - contentText: Left
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: A
+      - contentText: Right
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: D
+      - contentText: Jump
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+        controlKey: Space

@@ -3,29 +3,35 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+//using UnityEngine.UIElements;
+using static MenuOption;
 
 public class TabGroup : MonoBehaviour
 {
+    public UIScriptableObject menu;
     public GameObject tabButtonObj;
     public GameObject headerText;
     public GameObject contentText;
+    public GameObject controlsText;
 
     public List<GameObject> tabMenuHeaders;
     public List<GameObject> contentOptions;
-
-    public List<MenuOption> menuOptions;
+    
     public List<TabButton> tabButtons;
+    public SettingsValues settings;
 
     public TabButton selectedTab;
     public Transform panelLocation;
 
     public void Awake()
     {
-        for (int i = 0; i < menuOptions.Count; i++)
+        for (int i = 0; i < menu.menuOptions.Count; i++)
         {
             GameObject button = Instantiate(tabButtonObj, this.transform);
-            button.GetComponent<TabButton>().tabText.text = menuOptions[i].tabOption;
+            button.GetComponent<TabButton>().tabText.text = menu.menuOptions[i].tabOption;
         }
+
+        settings = this.gameObject.GetComponent<SettingsValues>();
     }
 
     // Adds tabs to list
@@ -69,41 +75,7 @@ public class TabGroup : MonoBehaviour
         ResetTabs();
         button.background.color = button.selectedColour;
 
-        //spawn menu options for each the individual tab selected
-        for (int i = 0; i < menuOptions.Count; i++)
-        {
-            if (button.GetComponent<TabButton>().tabText.text == menuOptions[i].tabOption)
-            {
-                for (int j = 0; j < menuOptions[i].headers.Count; j++)
-                {
-                    GameObject header = Instantiate(headerText, panelLocation);
-                    tabMenuHeaders.Add(header);
-                    header.GetComponent<TextMeshProUGUI>().text = menuOptions[i].headers[j].header;
-
-                    if (header.GetComponent<TextMeshProUGUI>().text == menuOptions[i].headers[j].header)
-                    {
-                        for (int k = 0; k < menuOptions[i].headers[j].content.Count; k++)
-                        {
-                            GameObject content = Instantiate(contentText, panelLocation);
-                            contentOptions.Add(content);
-                            GameObject contentTextField = content.transform.GetChild(0).gameObject;
-                            contentTextField.GetComponent<TextMeshProUGUI>().text = menuOptions[i].headers[j].content[k].contentText;
-
-                            GameObject contentSlider = content.transform.GetChild(1).gameObject;
-                            GameObject contentDropDown = content.transform.GetChild(2).gameObject;
-                            GameObject contentToggle = content.transform.GetChild(3).gameObject;
-                            
-                            if (menuOptions[i].headers[j].content[k].slider == true) contentSlider.gameObject.SetActive(true);
-                            else contentSlider.gameObject.SetActive(false);
-                            if (menuOptions[i].headers[j].content[k].dropDownMenu == true) contentDropDown.gameObject.SetActive(true);
-                            else contentDropDown.gameObject.SetActive(false);
-                            if (menuOptions[i].headers[j].content[k].toggle == true) contentToggle.gameObject.SetActive(true);
-                            else contentToggle.gameObject.SetActive(false);
-                        }
-                    }
-                }
-            }
-        }
+        SpawnMenuContents(button);
     }
 
     public void ResetTabs()
@@ -125,32 +97,73 @@ public class TabGroup : MonoBehaviour
             Destroy(content);
         }
 
+        //clear contents of array
         tabMenuHeaders.Clear();
         contentOptions.Clear();
     }
-}
 
-[System.Serializable]
-public struct MenuOption
-{
-    public string tabOption;
-    public List<HeaderAndContent> headers;
-}
+    public void SpawnMenuContents(TabButton button)
+    {
+        //spawn menu options for each the individual tab selected
+        for (int i = 0; i < menu.menuOptions.Count; i++)
+        {
+            if (button.GetComponent<TabButton>().tabText.text == menu.menuOptions[i].tabOption)
+            {
+                for (int j = 0; j < menu.menuOptions[i].panelCreation.Count; j++)
+                {
+                    GameObject header = Instantiate(headerText, panelLocation);
+                    tabMenuHeaders.Add(header);
+                    header.GetComponent<TextMeshProUGUI>().text = menu.menuOptions[i].panelCreation[j].header;
 
-[System.Serializable]
-public struct HeaderAndContent
-{
-    public string header;
-    public List<ContentField> content;
-}
+                    if (header.GetComponent<TextMeshProUGUI>().text == menu.menuOptions[i].panelCreation[j].header)
+                    {
+                        for (int k = 0; k < menu.menuOptions[i].panelCreation[j].panelContent.Count; k++)
+                        {
+                            GameObject content = Instantiate(contentText, panelLocation);
+                            contentOptions.Add(content);
+                            GameObject contentTextField = content.transform.GetChild(0).gameObject;
+                            contentTextField.GetComponent<TextMeshProUGUI>().text = menu.menuOptions[i].panelCreation[j].panelContent[k].contentText;
 
-[System.Serializable]
-public struct ContentField
-{
-    public string contentText;
-    public bool slider;
-    public bool dropDownMenu;
-    public bool toggle;
+                            if (menu.menuOptions[i].menuType.ToString() == "Settings")
+                            {
+                                DisplaySettingsUIElement(menu.menuOptions[i].panelCreation[j].panelContent[k], content);
+                            }
+
+                            if (menu.menuOptions[i].menuType.ToString() == "Controls")
+                            {
+                                DisplayControlsUIElement(menu.menuOptions[i].panelCreation[j].panelContent[k], content);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void DisplaySettingsUIElement(ContentField uiElement, GameObject content)
+    {
+        GameObject contentSlider = content.transform.GetChild(1).gameObject;
+        GameObject contentDropDown = content.transform.GetChild(2).gameObject;
+        GameObject contentToggle = content.transform.GetChild(3).gameObject;
+
+        if (uiElement.slider == true) contentSlider.gameObject.SetActive(true);
+        else contentSlider.gameObject.SetActive(false);
+        if (uiElement.dropDownMenu == true) contentDropDown.gameObject.SetActive(true);
+        else contentDropDown.gameObject.SetActive(false);
+        if (uiElement.toggle == true) contentToggle.gameObject.SetActive(true);
+        else contentToggle.gameObject.SetActive(false);
+
+        if (uiElement.contentText == "Volume") settings.volumeSlider = contentSlider.gameObject.GetComponent<Slider>();
+    }
+
+    public void DisplayControlsUIElement(ContentField uiElement, GameObject content)
+    {
+        GameObject controlText = content.transform.GetChild(4).gameObject;
+
+        controlText.gameObject.SetActive(true);
+
+        controlText.GetComponent<TextMeshProUGUI>().text = uiElement.controlKey;
+    }
 }
 
     

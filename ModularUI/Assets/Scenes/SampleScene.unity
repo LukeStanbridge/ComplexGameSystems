@@ -816,6 +816,7 @@ GameObject:
   - component: {fileID: 1834580931}
   - component: {fileID: 1834580932}
   - component: {fileID: 1834580933}
+  - component: {fileID: 1834580936}
   - component: {fileID: 1834580934}
   - component: {fileID: 1834580935}
   m_Layer: 5
@@ -883,67 +884,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5986d5e35410b0846aa7c3dccfa60a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menu: {fileID: 11400000, guid: e071c83bcc7b694498ba85262c8bc7ec, type: 2}
   tabButtonObj: {fileID: 6950267829898189088, guid: d84c1fd225cc14149a46300e2f7cff41, type: 3}
   headerText: {fileID: 743455822775217450, guid: b330667fcd7f0c241bcedd9564291a53, type: 3}
   contentText: {fileID: 743455822775217450, guid: e85c3e7461453f9468c1a96ab43ba9d3, type: 3}
+  controlsText: {fileID: 0}
   tabMenuHeaders: []
   contentOptions: []
-  menuOptions:
-  - tabOption: Gameplay
-    headers:
-    - header: Gameplay Options
-      content:
-      - contentText: Difficulty
-        slider: 0
-        dropDownMenu: 1
-        toggle: 0
-      - contentText: Subtitles
-        slider: 0
-        dropDownMenu: 0
-        toggle: 1
-      - contentText: Invert Controller
-        slider: 0
-        dropDownMenu: 0
-        toggle: 1
-      - contentText: Sensitivity
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-    - header: Audio Options
-      content:
-      - contentText: Game Volume
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-      - contentText: Mute
-        slider: 0
-        dropDownMenu: 0
-        toggle: 1
-      - contentText: Audio Type
-        slider: 0
-        dropDownMenu: 1
-        toggle: 0
-      - contentText: NPC Volume
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-  - tabOption: Battle Pass
-    headers:
-    - header: Battlepass
-      content:
-      - contentText: Level 1
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
-      - contentText: Lebel 2
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
-      - contentText: Level 3
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
   tabButtons: []
+  settings: {fileID: 0}
   selectedTab: {fileID: 0}
   panelLocation: {fileID: 2129622322}
 --- !u!114 &1834580934
@@ -990,6 +939,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &1834580936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834580930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4d9c8f8d82a3c44ea96068809c9b73f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 0}
 --- !u!1 &1883915084
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,7 +1401,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 50
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
