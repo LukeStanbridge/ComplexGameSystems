@@ -11,10 +11,15 @@ public class UIScriptableObject : ScriptableObject
 [System.Serializable]
 public struct MenuOption
 {
-    public enum MenuType { Settings, Controls, DragAndDrop, Battlepass }
+    public enum MenuType { Settings, Controls, Inventory, Battlepass }
     [SerializeField] public MenuType menuType;
 
     public string tabOption;
+
+    //Inventory variables
+    public int inventorySlots;
+    public List<GameObject> starterItems;
+
     public List<HeaderAndContent> panelCreation;
 }
 
