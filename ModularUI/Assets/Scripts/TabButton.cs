@@ -18,7 +18,9 @@ public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public Color selectedColour;
     RectTransform rectTransform;
     public TextMeshProUGUI tabText;
-
+    public AudioSource source;
+    public AudioClip clip;
+    
     public void Awake()
     {
         tabGroup = GetComponentInParent<TabGroup>();
@@ -28,12 +30,14 @@ public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void OnPointerClick(PointerEventData eventData)
     {
         tabGroup.OnTabSelected(this);
+        source.PlayOneShot(clip);
         Tween();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         tabGroup.OnTabEnter(this);
+        source.PlayOneShot(clip);
         Tween();
     }
 

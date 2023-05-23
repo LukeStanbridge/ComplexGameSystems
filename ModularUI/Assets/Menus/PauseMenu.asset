@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 394d1daccd4dd71459891a3a0d45ea01, type: 3}
-  m_Name: Settings Menu
+  m_Name: PauseMenu
   m_EditorClassIdentifier: 
   menuOptions:
   - menuType: 0

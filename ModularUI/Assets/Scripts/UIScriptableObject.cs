@@ -35,13 +35,12 @@ public class ContentField
 {
     public string contentText;
 
-    [Space(5)]
-    [Header("Settings options")]
+    //[Header("Settings options")]
     public bool slider;
     public bool dropDownMenu;
     public bool toggle;
 
-    [Space(5)]
-    [Header("Control Options")]
+
+    //[Header("Control Options")]
     public string controlKey;
 }
