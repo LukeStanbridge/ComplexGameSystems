@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MenuGeneratorEditorWindow : ExtendedEditorWindow
 {
+    Vector2 scrollPosTabs = Vector2.zero;
+    Vector2 scrollPosContent = Vector2.zero;
     public static void Open(UIScriptableObject uIScriptableObject)
     {
         MenuGeneratorEditorWindow window = GetWindow<MenuGeneratorEditorWindow>("Menu Generator Editor");
@@ -14,21 +16,23 @@ public class MenuGeneratorEditorWindow : ExtendedEditorWindow
     private void OnGUI()
     {
         currentProperty = serializedObject.FindProperty("menuOptions");
-        //DrawProperties(currentProperty, true);
 
         EditorGUILayout.BeginHorizontal();
 
-        EditorGUILayout.BeginVertical("box", GUILayout.MaxWidth(150), GUILayout.ExpandHeight(true));
+        EditorGUILayout.BeginVertical("box", GUILayout.MaxWidth(200), GUILayout.ExpandHeight(true));
 
+        scrollPosTabs = EditorGUILayout.BeginScrollView(scrollPosTabs);
         DrawSidebar(currentProperty);
+        EditorGUILayout.EndScrollView();
 
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.BeginVertical("box", GUILayout.ExpandHeight(true));
         if (selectedProperty != null)
         {
-            //DrawProperties(selectedProperty, true);
+            scrollPosContent = EditorGUILayout.BeginScrollView(scrollPosContent);
             DrawSelectedPropertiesPanel();
+            EditorGUILayout.EndScrollView();
         }
         else
         {
@@ -38,7 +42,6 @@ public class MenuGeneratorEditorWindow : ExtendedEditorWindow
         EditorGUILayout.EndHorizontal();
 
         Apply();
-
     }
 
     public bool settings;
@@ -58,7 +61,7 @@ public class MenuGeneratorEditorWindow : ExtendedEditorWindow
 
         EditorGUILayout.BeginHorizontal();
 
-        if(GUILayout.Button("Settings Options", EditorStyles.toolbarButton))
+        if (GUILayout.Button("Settings Options", EditorStyles.toolbarButton))
         {
             settings = true;
             controls = false;
@@ -95,25 +98,14 @@ public class MenuGeneratorEditorWindow : ExtendedEditorWindow
         if (settings)
         {
             EditorGUILayout.BeginVertical();
-            DrawField("panelCreation", true);
-            DrawField("header", true);
-            DrawField("panelContent", true);
-            DrawField("contentText", true);
-            DrawField("slider", true);
-            DrawField("dropDownMenu", true);
-            DrawField("toggle", true);
+            DrawField("settingsPanelCreation", true);
             EditorGUILayout.EndVertical();
-
         }
 
         if (controls)
         {
             EditorGUILayout.BeginVertical();
-            DrawField("panelCreation", true);
-            DrawField("header", true);
-            DrawField("panelContent", true);
-            DrawField("contentText", true);
-            DrawField("controlKey", true);
+            DrawField("controlsPanelCreation", true);
             EditorGUILayout.EndVertical();
         }
 
@@ -128,11 +120,7 @@ public class MenuGeneratorEditorWindow : ExtendedEditorWindow
         if (battlepass)
         {
             EditorGUILayout.BeginVertical();
-            DrawField("panelCreation", true);
-            DrawField("header", true);
-            DrawField("panelContent", true);
-            DrawField("contentText", true);
-            //Add battlepass funtionality with image
+            DrawField("battlepassPanelCreation", true);
             EditorGUILayout.EndVertical();
         }
     }

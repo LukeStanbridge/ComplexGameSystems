@@ -104,33 +104,13 @@ public class TabGroup : MonoBehaviour
                 {
                     DisplayInventoryUIElement(menu.menuOptions[i], menuPanel);
                 }
-                else
+                else if (menu.menuOptions[i].menuType.ToString() == "Settings")
                 {
-                    for (int j = 0; j < menu.menuOptions[i].panelCreation.Count; j++)
-                    {
-                        GameObject header = Instantiate(headerText, menuPanel.transform);
-                        header.GetComponent<TextMeshProUGUI>().text = menu.menuOptions[i].panelCreation[j].header;
-
-                        if (header.GetComponent<TextMeshProUGUI>().text == menu.menuOptions[i].panelCreation[j].header)
-                        {
-                            for (int k = 0; k < menu.menuOptions[i].panelCreation[j].panelContent.Count; k++)
-                            {
-                                GameObject content = Instantiate(contentText, menuPanel.transform);
-                                GameObject contentTextField = content.transform.GetChild(0).gameObject;
-                                contentTextField.GetComponent<TextMeshProUGUI>().text = menu.menuOptions[i].panelCreation[j].panelContent[k].contentText;
-
-                                if (menu.menuOptions[i].menuType.ToString() == "Settings")
-                                {
-                                    DisplaySettingsUIElement(menu.menuOptions[i].panelCreation[j].panelContent[k], content);
-                                }
-
-                                if (menu.menuOptions[i].menuType.ToString() == "Controls")
-                                {
-                                    DisplayControlsUIElement(menu.menuOptions[i].panelCreation[j].panelContent[k], content);
-                                }
-                            }
-                        }
-                    }
+                    DisplaySettingsUIElement(menu.menuOptions[i], menuPanel);
+                }
+                else if (menu.menuOptions[i].menuType.ToString() == "Controls")
+                {
+                    DisplayControlsUIElement(menu.menuOptions[i], menuPanel);
                 }
             }
         }
@@ -172,28 +152,64 @@ public class TabGroup : MonoBehaviour
     }
 
     //Display settings
-    public void DisplaySettingsUIElement(ContentField uiElement, GameObject content)
+    public void DisplaySettingsUIElement(MenuOption menuOption, GameObject menuPanel)
     {
-        GameObject contentSlider = content.transform.GetChild(1).gameObject;
-        GameObject contentDropDown = content.transform.GetChild(2).gameObject;
-        GameObject contentToggle = content.transform.GetChild(3).gameObject;
+        GameObject content;
+        
+        for (int i = 0; i < menuOption.settingsPanelCreation.Count; i++)
+        {
+            GameObject header = Instantiate(headerText, menuPanel.transform);
+            header.GetComponent<TextMeshProUGUI>().text = menuOption.settingsPanelCreation[i].header;
+            
+            if (header.GetComponent<TextMeshProUGUI>().text == menuOption.settingsPanelCreation[i].header)
+            {
+                for (int j = 0; j < menuOption.settingsPanelCreation[i].panelContent.Count; j++)
+                {
+                    SettingsContent uiElement = menuOption.settingsPanelCreation[i].panelContent[j];
+                    content = Instantiate(contentText, menuPanel.transform);
+                    GameObject contentTextField = content.transform.GetChild(0).gameObject;
+                    contentTextField.GetComponent<TextMeshProUGUI>().text = menuOption.settingsPanelCreation[i].panelContent[j].settingsContentText;
 
-        if (uiElement.slider == true) contentSlider.gameObject.SetActive(true);
-        else contentSlider.gameObject.SetActive(false);
-        if (uiElement.dropDownMenu == true) contentDropDown.gameObject.SetActive(true);
-        else contentDropDown.gameObject.SetActive(false);
-        if (uiElement.toggle == true) contentToggle.gameObject.SetActive(true);
-        else contentToggle.gameObject.SetActive(false);
+                    GameObject contentSlider = content.transform.GetChild(1).gameObject;
+                    GameObject contentDropDown = content.transform.GetChild(2).gameObject;
+                    GameObject contentToggle = content.transform.GetChild(3).gameObject;
+
+                    if (uiElement.slider == true) contentSlider.gameObject.SetActive(true);
+                    else contentSlider.gameObject.SetActive(false);
+                    if (uiElement.dropDownMenu == true) contentDropDown.gameObject.SetActive(true);
+                    else contentDropDown.gameObject.SetActive(false);
+                    if (uiElement.toggle == true) contentToggle.gameObject.SetActive(true);
+                    else contentToggle.gameObject.SetActive(false);
+                }
+            }
+        }
     }
 
     //Display Controls
-    public void DisplayControlsUIElement(ContentField uiElement, GameObject content)
+    public void DisplayControlsUIElement(MenuOption menuOption, GameObject menuPanel)
     {
-        GameObject controlText = content.transform.GetChild(4).gameObject;
+        GameObject content;
+        
+        for (int i = 0; i < menuOption.controlsPanelCreation.Count; i++)
+        {
+            GameObject header = Instantiate(headerText, menuPanel.transform);
+            header.GetComponent<TextMeshProUGUI>().text = menuOption.controlsPanelCreation[i].header;
 
-        controlText.gameObject.SetActive(true);
+            if (header.GetComponent<TextMeshProUGUI>().text == menuOption.controlsPanelCreation[i].header)
+            {
+                for (int j = 0; j < menuOption.controlsPanelCreation[i].panelContent.Count; j++)
+                {
+                    ControlsContent uiElement = menuOption.controlsPanelCreation[i].panelContent[j];
+                    content = Instantiate(contentText, menuPanel.transform);
+                    GameObject contentTextField = content.transform.GetChild(0).gameObject;
+                    contentTextField.GetComponent<TextMeshProUGUI>().text = menuOption.controlsPanelCreation[i].panelContent[j].controlsContentText;
 
-        controlText.GetComponent<TextMeshProUGUI>().text = uiElement.controlKey;
+                    GameObject controlText = content.transform.GetChild(4).gameObject;
+                    controlText.gameObject.SetActive(true);
+                    controlText.GetComponent<TextMeshProUGUI>().text = uiElement.controlKey;
+                }
+            }
+        }
     }
 
     //Display Inventory

@@ -17,78 +17,48 @@ MonoBehaviour:
     tabOption: Settings
     inventorySlots: 0
     starterItems: []
-    panelCreation:
-    - header: Gameplay Settings
+    settingsPanelCreation:
+    - header: Settings
       panelContent:
-      - contentText: Difficulty
-        slider: 0
-        dropDownMenu: 1
-        toggle: 0
-        controlKey: 
-      - contentText: Motion Blur
-        slider: 0
-        dropDownMenu: 1
-        toggle: 0
-        controlKey: 
-      - contentText: Invert Controls
-        slider: 0
-        dropDownMenu: 0
-        toggle: 1
-        controlKey: 
-      - contentText: Field Of View
+      - settingsContentText: Volume
         slider: 1
         dropDownMenu: 0
         toggle: 0
-        controlKey: 
-    - header: Audio Settings
-      panelContent:
-      - contentText: Subtitles
+      - settingsContentText: Mute
         slider: 0
         dropDownMenu: 0
         toggle: 1
-        controlKey: 
-      - contentText: Volume
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-        controlKey: 
-      - contentText: Audio Type
+    - header: Other Settings
+      panelContent:
+      - settingsContentText: Subtitles
         slider: 0
         dropDownMenu: 1
         toggle: 0
-        controlKey: 
+      - settingsContentText: Field of View
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
   - menuType: 1
     tabOption: Controls
     inventorySlots: 0
     starterItems: []
-    panelCreation:
-    - header: Controls
+    settingsPanelCreation: []
+    controlsPanelCreation:
+    - header: Character Controls
       panelContent:
-      - contentText: Forward
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
+      - controlsContentText: Forward
         controlKey: W
-      - contentText: Back
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
+      - controlsContentText: Back
         controlKey: S
-      - contentText: Left
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
+      - controlsContentText: Left
         controlKey: A
-      - contentText: Right
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
+      - controlsContentText: Right
         controlKey: D
-      - contentText: Jump
-        slider: 0
-        dropDownMenu: 0
-        toggle: 0
+      - controlsContentText: Jump
         controlKey: Space
+    battlepassPanelCreation: []
   - menuType: 2
     tabOption: Inventory
     inventorySlots: 48
@@ -97,7 +67,9 @@ MonoBehaviour:
     - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
     - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
     - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
-    panelCreation: []
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
   - menuType: 2
     tabOption: Equipment
     inventorySlots: 18
@@ -106,4 +78,6 @@ MonoBehaviour:
     - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
     - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
     - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
-    panelCreation: []
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []

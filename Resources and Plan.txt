@@ -9,6 +9,8 @@ Menu/Settings/InGame UI System
 
 - create battlepass section
 
+- figure out one panel creation button problem hbased on enum
+
 Examples
 
 https://www.youtube.com/watch?v=8xwMX1JkzBM - Star Wars Jedi Survivor
@@ -16,7 +18,6 @@ https://www.youtube.com/watch?v=211t6r12XPQ&t=114s - Tab System
 https://www.youtube.com/watch?v=CGsEJToeXmA&t=181s - grid layout system
 
 https://www.youtube.com/watch?v=c_3DXBrH-Is - custom editor
-youtube.com/watch?v=34736DHWzaI - another
 
 https://www.youtube.com/@CocoCode/videos - good UI Youtuber
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Menu", menuName = "CustomUI/Settings")]
 public class UIScriptableObject : ScriptableObject
@@ -20,27 +21,55 @@ public struct MenuOption
     public int inventorySlots;
     public List<GameObject> starterItems;
 
-    public List<HeaderAndContent> panelCreation;
+    public List<SettingsLayout> settingsPanelCreation;
+    public List<ControlsLayout> controlsPanelCreation;
+    public List<BattlepassLayout> battlepassPanelCreation;
 }
 
+//Panel Layout options
 [System.Serializable]
-public struct HeaderAndContent
+public struct SettingsLayout
 {
     public string header;
-    public List<ContentField> panelContent;
+    public List<SettingsContent> panelContent;
+}
+[System.Serializable]
+public struct ControlsLayout
+{
+    public string header;
+    public List<ControlsContent> panelContent;
+}
+[System.Serializable]
+
+public struct BattlepassLayout
+{
+    public string header;
+    public List<BattlepassContent> panelContent;
 }
 
-[System.Serializable]
-public class ContentField
-{
-    public string contentText;
 
-    //[Header("Settings options")]
+//Panel Content options
+[System.Serializable]
+public class SettingsContent
+{
+    public string settingsContentText;
     public bool slider;
     public bool dropDownMenu;
     public bool toggle;
+}
 
-
-    //[Header("Control Options")]
+[System.Serializable]
+public class ControlsContent
+{
+    public string controlsContentText;
     public string controlKey;
 }
+
+[System.Serializable]
+public class BattlepassContent
+{
+    public string battlepassContentText;
+    public Image battlepassItemImage;
+}
+
+

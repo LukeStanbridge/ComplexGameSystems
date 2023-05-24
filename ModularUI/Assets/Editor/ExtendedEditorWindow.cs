@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ public class ExtendedEditorWindow : EditorWindow
                 if (!string.IsNullOrEmpty(lastPropPath) && p.propertyPath.Contains(lastPropPath)) { continue; }
                 lastPropPath = p.propertyPath;
                 EditorGUILayout.PropertyField(p, drawChildren);
-            }
+            }   
         }
     }
 
@@ -52,6 +53,19 @@ public class ExtendedEditorWindow : EditorWindow
         {
             selectedProperty = serializedObject.FindProperty(selectedPropertyPath);
         }
+
+        //add and remove elements from sidebar
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add Item"))
+        {
+            prop.InsertArrayElementAtIndex(prop.arraySize);
+        }
+        if (GUILayout.Button("Remove Item") && prop.arraySize > 0)
+        {
+            prop.DeleteArrayElementAtIndex(prop.arraySize - 1);
+        }
+        EditorGUILayout.EndHorizontal();
     }
 
     protected void DrawField(string propName, bool relative)
