@@ -1,6 +1,5 @@
 Menu/Settings/InGame UI System
 
-- Tweening components(have different tween types available)
 - Particles In the UI
 - Fade in tool tip with more details about the option
 
@@ -8,8 +7,9 @@ Menu/Settings/InGame UI System
 - create thin scroll bar
 
 - create battlepass section
+- create save system
 
-- figure out one panel creation button problem hbased on enum
+- figure out one panel creation button problem based on enum
 
 Examples
 
@@ -21,3 +21,33 @@ https://www.youtube.com/watch?v=c_3DXBrH-Is - custom editor
 
 https://www.youtube.com/@CocoCode/videos - good UI Youtuber
 
+https://www.youtube.com/watch?v=x-5lrUSBwXY - saving
+
+https://sketchfab.com/3d-models/transformers-mp-50-tigatron-beast-wars-7f48776403264d11a74eeffd0ddefc25
+
+***COMING***
+Exoprimal
+XDefiant
+Endless Dungeon
+Remnant 2
+Diablo 4
+Gangs of Sherwood
+Hyper Light Breaker
+Suicide Squad: Kill the Justice League
+
+***OUT***
+Wild Hearts
+Saints Row 3
+Remnant: From the Ashes
+Aliens: Fireteam Elite
+World War Z: Aftermath
+Risk of Rain 2
+The Division 2
+
+Star Wars Battlefront 2
+Sniper Elite 5
+Outriders
+Gears 5
+PUBG: Battlegrounds
+Fortnite
+Naraka Bladepoint

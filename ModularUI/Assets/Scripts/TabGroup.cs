@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-//using UnityEngine.UIElements;
+
 using static MenuOption;
+using Unity.VisualScripting;
+using System;
+using UnityEngine.UIElements;
 
 public class TabGroup : MonoBehaviour
 {
@@ -23,6 +25,9 @@ public class TabGroup : MonoBehaviour
     public List<GameObject> menuPanels;
     public List<TabButton> tabButtons;
     public TabButton selectedTab;
+    public GetGameData gameData;
+
+    private int buttonsArrayIndex;
 
     public void Awake()
     {
@@ -34,9 +39,41 @@ public class TabGroup : MonoBehaviour
 
             //Instantiate menu panels
             CreateMenuPanels(menu.menuOptions[i]);
-            
+
             //Spawn panel data in correct panel
             SpawnMenuContents(button.GetComponent<TabButton>(), menuPanels[i]);
+        }
+        buttonsArrayIndex = 0;
+    }
+
+    private void Update()
+    {
+        if (selectedTab == null) OnTabSelected(tabButtons[buttonsArrayIndex]);
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (buttonsArrayIndex != 0)
+            {
+                buttonsArrayIndex--;
+                SelectTab(buttonsArrayIndex);
+            }
+            else if (buttonsArrayIndex == 0)
+            {
+                buttonsArrayIndex = tabButtons.Count - 1;
+                SelectTab(buttonsArrayIndex);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (buttonsArrayIndex == tabButtons.Count - 1)
+            {
+                buttonsArrayIndex = 0;
+                SelectTab(buttonsArrayIndex);
+            }
+            else if (buttonsArrayIndex != tabButtons.Count - 1)
+            {
+                buttonsArrayIndex++;
+                SelectTab(buttonsArrayIndex);
+            }
         }
     }
 
@@ -123,8 +160,14 @@ public class TabGroup : MonoBehaviour
         {
             if (button == tabButtons[i])
             {
-                menuPanels[i].SetActive(true);
-            }
+                if (menuPanels[i].activeSelf == false) //check if menupanel is already open
+                {
+                    buttonsArrayIndex = i;
+                    menuPanels[i].transform.localScale = new Vector3(0, 0, 0);
+                    menuPanels[i].SetActive(true);
+                    LeanTween.scale(menuPanels[i], new Vector3(1f, 1f, 1f), 0.1f).setDelay(0.1f).setEase(LeanTweenType.easeInSine);
+                }
+            }  
             else menuPanels[i].SetActive(false);
         }
     }
@@ -227,6 +270,13 @@ public class TabGroup : MonoBehaviour
                 starterItem.transform.parent = inventorySlot.transform;
             }
         }
+    }
+
+    public void SelectTab(int index)
+    {
+        OnTabSelected(tabButtons[index]);
+        tabButtons[index].Tween();
+        tabButtons[index].source.PlayOneShot(tabButtons[index].clip);
     }
 }
 

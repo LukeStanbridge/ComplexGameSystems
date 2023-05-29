@@ -8,7 +8,6 @@ using TMPro;
 [RequireComponent(typeof(Image))]
 public class TabButton : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler, IPointerExitHandler
 {
-    public List<TabButton> tabButtons;
     public TabGroup tabGroup;
     public float tweenTime;
     public float tweenSize;
