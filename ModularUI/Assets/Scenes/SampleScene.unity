@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 421289770}
   - component: {fileID: 421289769}
   - component: {fileID: 421289768}
+  - component: {fileID: 421289772}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -224,6 +225,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &421289772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421289767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20504379695bd184287743c47795723e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderValues: []
+  toggleValues: 
+  options: []
 --- !u!1 &469619356
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,6 +910,7 @@ MonoBehaviour:
   menuPanels: []
   tabButtons: []
   selectedTab: {fileID: 0}
+  gameData: {fileID: 421289772}
 --- !u!114 &1834580934
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -28,6 +28,10 @@ MonoBehaviour:
         slider: 0
         dropDownMenu: 0
         toggle: 1
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
     - header: Other Settings
       panelContent:
       - settingsContentText: Subtitles
@@ -38,6 +42,10 @@ MonoBehaviour:
         slider: 1
         dropDownMenu: 0
         toggle: 0
+      - settingsContentText: Subtitles
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
     controlsPanelCreation: []
     battlepassPanelCreation: []
   - menuType: 1
@@ -58,6 +66,10 @@ MonoBehaviour:
         controlKey: D
       - controlsContentText: Jump
         controlKey: Space
+      - controlsContentText: Save Settings
+        controlKey: P
+      - controlsContentText: Load Settings
+        controlKey: O
     battlepassPanelCreation: []
   - menuType: 2
     tabOption: Inventory

@@ -7,8 +7,6 @@ Menu/Settings/InGame UI System
 - create thin scroll bar
 
 - create battlepass section
-- create save system
-
 - figure out one panel creation button problem based on enum
 
 Examples
