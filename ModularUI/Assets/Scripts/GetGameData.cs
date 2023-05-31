@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GetGameData : MonoBehaviour
 {
@@ -8,10 +9,12 @@ public class GetGameData : MonoBehaviour
     public List<bool> toggleValues;
     public List<int> toggleConvertedValues;
     public List<int> dropdownOptions;
+    public List<Vector3> itemSlotPosition;
 
     private int savedSliderCount;
     private int savedToggleCount;
     private int savedDropdownCount;
+    private int savedItemSlotPositionCount;
     public void SaveSettings()
     {
         //save slider values
@@ -36,6 +39,14 @@ public class GetGameData : MonoBehaviour
             PlayerPrefs.SetInt("DropdownValues" + i, dropdownOptions[i]);
         }
         PlayerPrefs.SetInt("DropdownCount", dropdownOptions.Count);
+
+        //save itemSlot values
+        for (int i = 0;i < itemSlotPosition.Count; i++)
+        {
+            PlayerPrefs.SetFloat("itemSlotXValue" + i, itemSlotPosition[i].x);
+            PlayerPrefs.SetFloat("itemSlotYValue" + i, itemSlotPosition[i].y);
+        }
+        PlayerPrefs.SetInt("ItemSlotCount", itemSlotPosition.Count);
     }
 
     public void LoadSettings()
@@ -69,6 +80,17 @@ public class GetGameData : MonoBehaviour
         {
             int dropdownValue = PlayerPrefs.GetInt("DropdownValues" + i);
             dropdownOptions.Add(dropdownValue);
+        }
+
+        //load item slot positions
+        itemSlotPosition.Clear();
+        savedItemSlotPositionCount = PlayerPrefs.GetInt("ItemSlotCount");
+        for (int i = 0;i < savedItemSlotPositionCount; i++)
+        {
+            float itemSlotXValue = PlayerPrefs.GetFloat("itemSlotXValue" + i);
+            float itemSlotYValue = PlayerPrefs.GetFloat("itemSlotYValue" + i);
+            Vector3 pos = new Vector3(itemSlotXValue, itemSlotYValue, 0);
+            itemSlotPosition.Add(pos);
         }
     }
 

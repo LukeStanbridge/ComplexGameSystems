@@ -82,14 +82,3 @@ MonoBehaviour:
     settingsPanelCreation: []
     controlsPanelCreation: []
     battlepassPanelCreation: []
-  - menuType: 2
-    tabOption: Equipment
-    inventorySlots: 18
-    starterItems:
-    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
-    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
-    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
-    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
-    settingsPanelCreation: []
-    controlsPanelCreation: []
-    battlepassPanelCreation: []

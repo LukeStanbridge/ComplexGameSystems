@@ -78,7 +78,9 @@ public class TabGroup : MonoBehaviour
             gameData.sliderValues.Clear();
             gameData.dropdownOptions.Clear();
             gameData.toggleValues.Clear();
+            gameData.itemSlotPosition.Clear();
             SaveSettings();
+            SaveDragAndDropMenus();
             gameData.SaveSettings();
         }
 
@@ -87,6 +89,7 @@ public class TabGroup : MonoBehaviour
             //load values
             gameData.LoadSettings();
             LoadSettings();
+            LoadDragAndDropMenu();
         }
     }
 
@@ -297,9 +300,76 @@ public class TabGroup : MonoBehaviour
     public void SaveDragAndDropMenus()
     {
         //search for inventory slot
-        //check if child in game object(item)
-        //save transform of parent object
+        List<GameObject> inventoryPanels = new List<GameObject>();
+        for (int i = 0; i < menuPanels.Count; i++)
+        {
+            if (panelNames[i] != null)
+            {
+                if (menuPanels[i].name == panelNames[i])
+                {
+                    for (int j = 0; j < menuPanels[i].transform.childCount; j++)
+                    {
+                        if (menuPanels[i].transform.GetChild(j).gameObject.name == "InventorySlot(Clone)")
+                        {
+                            inventoryPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
+                        }
+                    }
+                }
+            }
+        }
+
+        //check and save psoiton if child in game object(item)
+        for (int i = 0;i < inventoryPanels.Count; i++)
+        {
+            if (inventoryPanels[i].transform.childCount > 0)
+            {
+                gameData.itemSlotPosition.Add(inventoryPanels[i].GetComponent<RectTransform>().position);
+            }
+        }
+    }
+
+    public void LoadDragAndDropMenu()
+    {
         //respawn item at inventory slot with same transform.
+        List<GameObject> inventoryPanels = new List<GameObject>();
+        for (int i = 0; i < menuPanels.Count; i++)
+        {
+            if (panelNames[i] != null)
+            {
+                if (menuPanels[i].name == panelNames[i])
+                {
+                    for (int j = 0; j < menuPanels[i].transform.childCount; j++)
+                    {
+                        if (menuPanels[i].transform.GetChild(j).gameObject.name == "InventorySlot(Clone)")
+                        {
+                            inventoryPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
+                        }
+                    }
+                }
+            }
+        }
+
+        //Obtain items in list
+        List<GameObject> items = new List<GameObject>();
+        for (int i = 0; i < inventoryPanels.Count; i++)
+        {
+            if (inventoryPanels[i].transform.childCount > 0)
+            {
+                items.Add(inventoryPanels[i].transform.GetChild(0).gameObject);
+            }
+        }
+
+        //Redistribute items to correct location
+        for (int i = 0; i < inventoryPanels.Count; i++)
+        {
+            for (int j = 0; j < items.Count; j++)
+            {
+                if (inventoryPanels[i].GetComponent<RectTransform>().position == gameData.itemSlotPosition[j])
+                {
+                    items[j].transform.SetParent(inventoryPanels[i].transform);
+                }
+            }
+        }
     }
 
     public void SaveSettings()
@@ -370,7 +440,6 @@ public class TabGroup : MonoBehaviour
                         if (menuPanels[i].transform.GetChild(j).gameObject.name == "Content(Clone)")
                         {
                             contentPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
-
                         }
                     }
                 }
