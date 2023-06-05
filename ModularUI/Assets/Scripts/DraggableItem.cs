@@ -8,6 +8,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image image;
     public TabGroup tabGroup;
+    public int ID;
 
     [HideInInspector] public Transform parentAfterDrag;
 
@@ -33,7 +34,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         transform.SetParent(parentAfterDrag);
         image.raycastTarget = true;
-        tabGroup.gameData.itemSlotPosition.Clear();
+        tabGroup.gameData.itemSlotID.Clear();
+        tabGroup.gameData.itemIDValue.Clear();
         tabGroup.SaveDragAndDropMenus();
         tabGroup.gameData.SaveSettings();
     }

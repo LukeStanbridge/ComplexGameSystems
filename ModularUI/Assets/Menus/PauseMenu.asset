@@ -46,6 +46,22 @@ MonoBehaviour:
         slider: 0
         dropDownMenu: 0
         toggle: 1
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
     controlsPanelCreation: []
     battlepassPanelCreation: []
   - menuType: 1
@@ -68,8 +84,8 @@ MonoBehaviour:
         controlKey: Space
       - controlsContentText: Save Settings
         controlKey: P
-      - controlsContentText: Load Settings
-        controlKey: O
+      - controlsContentText: Reset Settings
+        controlKey: R
     battlepassPanelCreation: []
   - menuType: 2
     tabOption: Inventory
@@ -80,5 +96,50 @@ MonoBehaviour:
     - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
     - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
     settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 2
+    tabOption: Equipment
+    inventorySlots: 24
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 2
+    tabOption: Weapons
+    inventorySlots: 12
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 0
+    tabOption: A Setting
+    inventorySlots: 12
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation:
+    - header: Some Setting
+      panelContent:
+      - settingsContentText: vffft
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+    - header: Setty
+      panelContent:
+      - settingsContentText: wahhh
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
     controlsPanelCreation: []
     battlepassPanelCreation: []

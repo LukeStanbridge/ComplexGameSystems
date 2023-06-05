@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,11 +24,13 @@ public class TabGroup : MonoBehaviour
     public List<string> panelNames;
     public TabButton selectedTab;
     public GetGameData gameData;
-
     private int buttonsArrayIndex;
+    [SerializeField] private int inventoryIndex;
+    [SerializeField] private int settingIndex;
 
     public void Awake()
     {
+        settingIndex = 1;
         for (int i = 0; i < menu.menuOptions.Count; i++)
         {
             //Instantiate menu buttons
@@ -40,6 +44,12 @@ public class TabGroup : MonoBehaviour
             SpawnMenuContents(button.GetComponent<TabButton>(), menuPanels[i]);
         }
         buttonsArrayIndex = 0;
+        
+
+        //load values
+        gameData.LoadSettings();
+        LoadSettings();
+        LoadDragAndDropMenu();
     }
 
     private void Update()
@@ -78,18 +88,51 @@ public class TabGroup : MonoBehaviour
             gameData.sliderValues.Clear();
             gameData.dropdownOptions.Clear();
             gameData.toggleValues.Clear();
-            gameData.itemSlotPosition.Clear();
+            gameData.itemSlotID.Clear();
+            gameData.itemIDValue.Clear();
             SaveSettings();
             SaveDragAndDropMenus();
             gameData.SaveSettings();
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        //reset 
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            //load values
-            gameData.LoadSettings();
-            LoadSettings();
-            LoadDragAndDropMenu();
+            menuPanels.Clear();
+            tabButtons.Clear();
+            panelNames.Clear();
+
+            foreach (Transform child in this.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            foreach (Transform child in viewPanel.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+
+            for (int i = 0; i < menu.menuOptions.Count; i++)
+            {
+                //Instantiate menu buttons
+                GameObject button = Instantiate(tabButtonObj, this.transform);
+                button.GetComponent<TabButton>().tabText.text = menu.menuOptions[i].tabOption;
+
+                //Instantiate menu panels
+                CreateMenuPanels(menu.menuOptions[i]);
+
+                //Spawn panel data in correct panel
+                SpawnMenuContents(button.GetComponent<TabButton>(), menuPanels[i]);
+            }
+
+            gameData.sliderValues.Clear();
+            gameData.dropdownOptions.Clear();
+            gameData.toggleValues.Clear();
+            gameData.itemSlotID.Clear();
+            gameData.itemIDValue.Clear();
+            SaveSettings();
+            SaveDragAndDropMenus();
+            gameData.SaveSettings();
         }
     }
 
@@ -228,18 +271,34 @@ public class TabGroup : MonoBehaviour
                 {
                     SettingsContent uiElement = menuOption.settingsPanelCreation[i].panelContent[j];
                     content = Instantiate(contentText, menuPanel.transform);
+                    
                     GameObject contentTextField = content.transform.GetChild(0).gameObject;
                     contentTextField.GetComponent<TextMeshProUGUI>().text = menuOption.settingsPanelCreation[i].panelContent[j].settingsContentText;
-
+                    
                     GameObject contentSlider = content.transform.GetChild(1).gameObject;
                     GameObject contentDropDown = content.transform.GetChild(2).gameObject;
                     GameObject contentToggle = content.transform.GetChild(3).gameObject;
 
-                    if (uiElement.slider == true) contentSlider.gameObject.SetActive(true);
+                    if (uiElement.slider == true)
+                    {
+                        contentSlider.gameObject.SetActive(true);
+                        content.GetComponent<SettingID>().settingID = settingIndex;
+                        settingIndex++;
+                    }
                     else contentSlider.gameObject.SetActive(false);
-                    if (uiElement.dropDownMenu == true) contentDropDown.gameObject.SetActive(true);
+                    if (uiElement.dropDownMenu == true)
+                    {
+                        contentDropDown.gameObject.SetActive(true);
+                        content.GetComponent<SettingID>().settingID = settingIndex;
+                        settingIndex++;
+                    }
                     else contentDropDown.gameObject.SetActive(false);
-                    if (uiElement.toggle == true) contentToggle.gameObject.SetActive(true);
+                    if (uiElement.toggle == true)
+                    {
+                        contentToggle.gameObject.SetActive(true);
+                        content.GetComponent<SettingID>().settingID = settingIndex;
+                        settingIndex++;
+                    }
                     else contentToggle.gameObject.SetActive(false);
                 }
             }
@@ -280,6 +339,8 @@ public class TabGroup : MonoBehaviour
         {
             GameObject inventorySlot = Instantiate(inventorySlotObj, gridLayout.transform);
             inventorySlot.transform.parent = gridLayout.transform;
+            inventorySlot.GetComponent<InventorySlot>().inventorySlotID = inventoryIndex;
+            inventoryIndex++;
 
             //spawn drag and drop items
             if (i < menuOption.starterItems.Count)
@@ -323,7 +384,8 @@ public class TabGroup : MonoBehaviour
         {
             if (inventoryPanels[i].transform.childCount > 0)
             {
-                gameData.itemSlotPosition.Add(inventoryPanels[i].GetComponent<RectTransform>().position);
+                gameData.itemSlotID.Add(inventoryPanels[i].GetComponent<InventorySlot>().inventorySlotID);
+                gameData.itemIDValue.Add(inventoryPanels[i].GetComponentInChildren<DraggableItem>().ID);
             }
         }
     }
@@ -331,13 +393,14 @@ public class TabGroup : MonoBehaviour
     public void LoadDragAndDropMenu()
     {
         //respawn item at inventory slot with same transform.
-        List<GameObject> inventoryPanels = new List<GameObject>();
         for (int i = 0; i < menuPanels.Count; i++)
         {
             if (panelNames[i] != null)
             {
                 if (menuPanels[i].name == panelNames[i])
                 {
+                    //collect inventory slots for tab option
+                    List<GameObject> inventoryPanels = new List<GameObject>();
                     for (int j = 0; j < menuPanels[i].transform.childCount; j++)
                     {
                         if (menuPanels[i].transform.GetChild(j).gameObject.name == "InventorySlot(Clone)")
@@ -345,28 +408,41 @@ public class TabGroup : MonoBehaviour
                             inventoryPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
                         }
                     }
-                }
-            }
-        }
 
-        //Obtain items in list
-        List<GameObject> items = new List<GameObject>();
-        for (int i = 0; i < inventoryPanels.Count; i++)
-        {
-            if (inventoryPanels[i].transform.childCount > 0)
-            {
-                items.Add(inventoryPanels[i].transform.GetChild(0).gameObject);
-            }
-        }
+                    //Obtain items in list
+                    List<GameObject> items = new List<GameObject>();
+                    for (int k = 0; k < inventoryPanels.Count; k++)
+                    {
+                        if (inventoryPanels[k].transform.childCount > 0)
+                        {
+                            items.Add(inventoryPanels[k].transform.GetChild(0).gameObject);
+                        }
+                    }
 
-        //Redistribute items to correct location
-        for (int i = 0; i < inventoryPanels.Count; i++)
-        {
-            for (int j = 0; j < items.Count; j++)
-            {
-                if (inventoryPanels[i].GetComponent<RectTransform>().position == gameData.itemSlotPosition[j])
-                {
-                    items[j].transform.SetParent(inventoryPanels[i].transform);
+                    //sort list
+                    List<GameObject> sorted = new List<GameObject>();
+                    for (int l = 0; l < gameData.itemIDValue.Count; l++)
+                    {
+                        foreach (GameObject item in items)
+                        {
+                            if (item.GetComponent<DraggableItem>().ID == gameData.itemIDValue[l])
+                            {
+                                sorted.Add(item);
+                            }
+                        }
+                    }
+
+                    //Redistribute items to correct location
+                    for (int m = 0; m < inventoryPanels.Count; m++)
+                    {
+                        for (int n = 0; n < sorted.Count; n++)
+                        {
+                            if (inventoryPanels[m].GetComponent<InventorySlot>().inventorySlotID == gameData.itemSlotID[n])
+                            {
+                                sorted[n].transform.SetParent(inventoryPanels[m].transform);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -388,51 +464,84 @@ public class TabGroup : MonoBehaviour
                             contentPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
                         }
                     }
+
+                    for (int k = 0; k < contentPanels.Count; k++)
+                    {
+                        for (int l = 0; l < contentPanels[k].transform.childCount; l++)
+                        {
+                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Slider")
+                            {
+                                GameObject slider = contentPanels[k].transform.Find("Slider").gameObject;
+                                if (slider.activeSelf == true)
+                                {
+                                    gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
+                                }
+                            }
+
+                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Dropdown")
+                            {
+                                GameObject dropdown = contentPanels[k].transform.Find("Dropdown").gameObject;
+                                if (dropdown.activeSelf == true)
+                                {
+                                    gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
+                                }
+                            }
+
+                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Toggle")
+                            {
+                                GameObject toggle = contentPanels[k].transform.Find("Toggle").gameObject;
+                                if (toggle.activeSelf == true)
+                                {
+                                    gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        for (int i = 0; i < contentPanels.Count; i++)
-        {
-            for (int j = 0; j < contentPanels[i].transform.childCount; j++)
-            {
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
-                {
-                    GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
-                    if (slider.activeSelf == true)
-                    {
-                        gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
-                    }
-                }
+        //for (int i = 0; i < contentPanels.Count; i++)
+        //{
+        //    for (int j = 0; j < contentPanels[i].transform.childCount; j++)
+        //    {
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
+        //        {
+        //            GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
+        //            if (slider.activeSelf == true)
+        //            {
+        //                gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
+        //            }
+        //        }
 
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
-                {
-                    GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
-                    if (dropdown.activeSelf == true)
-                    {
-                        gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
-                    }
-                }
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
+        //        {
+        //            GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
+        //            if (dropdown.activeSelf == true)
+        //            {
+        //                gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
+        //            }
+        //        }
 
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
-                {
-                    GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
-                    if (toggle.activeSelf == true)
-                    {
-                        gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
-                    }
-                }
-            }
-        }
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
+        //        {
+        //            GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
+        //            if (toggle.activeSelf == true)
+        //            {
+        //                gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public void LoadSettings()
     {
-        List<GameObject> contentPanels = new List<GameObject>();
         for (int i = 0; i < menuPanels.Count; i++)
         {
             if (panelNames[i] != null)
             {
+                List<GameObject> contentPanels = new List<GameObject>();
                 if (menuPanels[i].name == panelNames[i])
                 {
                     for (int j = 0; j < menuPanels[i].transform.childCount; j++)
@@ -443,61 +552,113 @@ public class TabGroup : MonoBehaviour
                         }
                     }
                 }
+
+                List<GameObject> sliders = new List<GameObject>();
+                List<GameObject> toggles = new List<GameObject>();
+                List<GameObject> dropdowns = new List<GameObject>();
+
+                for (int k = 0; k < contentPanels.Count; k++)
+                {
+                    for (int l = 0; l < contentPanels[k].transform.childCount; l++)
+                    {
+                        if (contentPanels[k].transform.GetChild(l).gameObject.name == "Slider")
+                        {
+                            GameObject slider = contentPanels[k].transform.Find("Slider").gameObject;
+                            if (slider.activeSelf == true)
+                            {
+                                sliders.Add(slider);
+                            }
+                        }
+
+                        if (contentPanels[k].transform.GetChild(l).gameObject.name == "Dropdown")
+                        {
+                            GameObject dropdown = contentPanels[k].transform.Find("Dropdown").gameObject;
+                            if (dropdown.activeSelf == true)
+                            {
+                                dropdowns.Add(dropdown);
+                            }
+                        }
+
+                        if (contentPanels[k].transform.GetChild(l).gameObject.name == "Toggle")
+                        {
+                            GameObject toggle = contentPanels[k].transform.Find("Toggle").gameObject;
+                            if (toggle.activeSelf == true)
+                            {
+                                toggles.Add(toggle);
+                            }
+                        }
+                    }
+                }
+
+                for (int k = 0; k < sliders.Count; k++)
+                {
+                    sliders[k].GetComponent<Slider>().value = gameData.sliderValues[k];
+                }
+
+                for (int k = 0; k < toggles.Count; k++)
+                {
+                    toggles[k].GetComponent<Toggle>().isOn = gameData.toggleValues[k];
+                }
+
+                for (int k = 0; k < dropdowns.Count; k++)
+                {
+                    dropdowns[k].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[k];
+                }
             }
         }
 
-        List<GameObject> sliders = new List<GameObject>();
-        List<GameObject> toggles = new List<GameObject>();
-        List<GameObject> dropdowns = new List<GameObject>();
+        //List<GameObject> sliders = new List<GameObject>();
+        //List<GameObject> toggles = new List<GameObject>();
+        //List<GameObject> dropdowns = new List<GameObject>();
         
-        for (int i = 0; i < contentPanels.Count; i++)
-        {
+        //for (int i = 0; i < contentPanels.Count; i++)
+        //{
             
-            for (int j = 0; j < contentPanels[i].transform.childCount; j++)
-            {
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
-                {
-                    GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
-                    if (slider.activeSelf == true)
-                    {
-                        sliders.Add(slider);
-                    }
-                }
+        //    for (int j = 0; j < contentPanels[i].transform.childCount; j++)
+        //    {
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
+        //        {
+        //            GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
+        //            if (slider.activeSelf == true)
+        //            {
+        //                sliders.Add(slider);
+        //            }
+        //        }
 
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
-                {
-                    GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
-                    if (dropdown.activeSelf == true)
-                    {
-                        dropdowns.Add(dropdown);
-                    }
-                }
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
+        //        {
+        //            GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
+        //            if (dropdown.activeSelf == true)
+        //            {
+        //                dropdowns.Add(dropdown);
+        //            }
+        //        }
 
-                if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
-                {
-                    GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
-                    if (toggle.activeSelf == true)
-                    {
-                        toggles.Add(toggle);
-                    }
-                }
-            }
-        }
+        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
+        //        {
+        //            GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
+        //            if (toggle.activeSelf == true)
+        //            {
+        //                toggles.Add(toggle);
+        //            }
+        //        }
+        //    }
+        //}
 
-        for (int i = 0; i < sliders.Count; i++)
-        {
-            sliders[i].GetComponent<Slider>().value = gameData.sliderValues[i];
-        }
+        //for (int i = 0; i < sliders.Count; i++)
+        //{
+        //    sliders[i].GetComponent<Slider>().value = gameData.sliderValues[i];
+        //}
 
-        for (int i = 0; i < toggles.Count; i++)
-        {
-            toggles[i].GetComponent<Toggle>().isOn = gameData.toggleValues[i];
-        }
+        //for (int i = 0; i < toggles.Count; i++)
+        //{
+        //    toggles[i].GetComponent<Toggle>().isOn = gameData.toggleValues[i];
+        //}
 
-        for (int i = 0; i < dropdowns.Count; i++)
-        {
-            dropdowns[i].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[i];
-        }
+        //for (int i = 0; i < dropdowns.Count; i++)
+        //{
+        //    dropdowns[i].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[i];
+        //}
     }
 }
 

@@ -9,19 +9,21 @@ public class GetGameData : MonoBehaviour
     public List<bool> toggleValues;
     public List<int> toggleConvertedValues;
     public List<int> dropdownOptions;
-    public List<Vector3> itemSlotPosition;
+    public List<int> itemSlotID;
+    public List<int> itemIDValue;
 
     private int savedSliderCount;
     private int savedToggleCount;
     private int savedDropdownCount;
-    private int savedItemSlotPositionCount;
+    private int savedItemSlotIDCount;
+    private int savedItemIDCount;
+
     public void SaveSettings()
     {
         //save slider values
         for (int i = 0; i < sliderValues.Count; i++)
         {
             PlayerPrefs.SetFloat("SliderValues" + i, sliderValues[i]);
-
         }
         PlayerPrefs.SetInt("SliderCount", sliderValues.Count);
 
@@ -41,12 +43,18 @@ public class GetGameData : MonoBehaviour
         PlayerPrefs.SetInt("DropdownCount", dropdownOptions.Count);
 
         //save itemSlot values
-        for (int i = 0;i < itemSlotPosition.Count; i++)
+        for (int i = 0;i < itemSlotID.Count; i++)
         {
-            PlayerPrefs.SetFloat("itemSlotXValue" + i, itemSlotPosition[i].x);
-            PlayerPrefs.SetFloat("itemSlotYValue" + i, itemSlotPosition[i].y);
+            PlayerPrefs.SetInt("itemSlotID" + i, itemSlotID[i]);
         }
-        PlayerPrefs.SetInt("ItemSlotCount", itemSlotPosition.Count);
+        PlayerPrefs.SetInt("ItemSlotCount", itemSlotID.Count);
+
+        //save inventory items
+        for (int i = 0; i < itemIDValue.Count; i++)
+        {
+            PlayerPrefs.SetInt("itemIDValue" + i, itemIDValue[i]);
+        }
+        PlayerPrefs.SetInt("ItemIDCount", itemIDValue.Count);
     }
 
     public void LoadSettings()
@@ -83,14 +91,22 @@ public class GetGameData : MonoBehaviour
         }
 
         //load item slot positions
-        itemSlotPosition.Clear();
-        savedItemSlotPositionCount = PlayerPrefs.GetInt("ItemSlotCount");
-        for (int i = 0;i < savedItemSlotPositionCount; i++)
+        itemSlotID.Clear();
+        savedItemSlotIDCount = PlayerPrefs.GetInt("ItemSlotCount");
+        for (int i = 0; i < savedItemSlotIDCount; i++)
         {
-            float itemSlotXValue = PlayerPrefs.GetFloat("itemSlotXValue" + i);
-            float itemSlotYValue = PlayerPrefs.GetFloat("itemSlotYValue" + i);
-            Vector3 pos = new Vector3(itemSlotXValue, itemSlotYValue, 0);
-            itemSlotPosition.Add(pos);
+            int itemSlotIDValue = PlayerPrefs.GetInt("itemSlotID" + i);
+            itemSlotID.Add(itemSlotIDValue);
+        }
+
+        //load item ID values
+        itemIDValue.Clear();
+        savedItemIDCount = PlayerPrefs.GetInt("ItemIDCount");
+
+        for (int i = 0; i < savedItemIDCount; i++)
+        {
+            int itemID = PlayerPrefs.GetInt("itemIDValue" + i);
+            itemIDValue.Add(itemID);
         }
     }
 

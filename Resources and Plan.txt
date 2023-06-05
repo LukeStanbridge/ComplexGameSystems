@@ -2,14 +2,13 @@ Menu/Settings/InGame UI System
 
 - Particles In the UI
 - Fade in tool tip with more details about the option
-
 - shadow on edges of viewports for scrolling
+
 - create thin scroll bar
-
 - create battlepass section
-- figure out one panel creation button problem based on enum
 
--fix inventory mixing up items
+- figure out single panel creation button problem based on enum
+- fix multiple settings and controls pages
 
 Examples
 
