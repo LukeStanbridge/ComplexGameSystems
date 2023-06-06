@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
@@ -26,11 +27,12 @@ public class TabGroup : MonoBehaviour
     public GetGameData gameData;
     private int buttonsArrayIndex;
     [SerializeField] private int inventoryIndex;
-    [SerializeField] private int settingIndex;
+    [SerializeField] private int sliderIndex;
+    [SerializeField] private int toggleIndex;
+    [SerializeField] private int dropdownIndex;
 
     public void Awake()
     {
-        settingIndex = 1;
         for (int i = 0; i < menu.menuOptions.Count; i++)
         {
             //Instantiate menu buttons
@@ -44,7 +46,6 @@ public class TabGroup : MonoBehaviour
             SpawnMenuContents(button.GetComponent<TabButton>(), menuPanels[i]);
         }
         buttonsArrayIndex = 0;
-        
 
         //load values
         gameData.LoadSettings();
@@ -88,6 +89,7 @@ public class TabGroup : MonoBehaviour
             gameData.sliderValues.Clear();
             gameData.dropdownOptions.Clear();
             gameData.toggleValues.Clear();
+            gameData.toggleConvertedValues.Clear();
             gameData.itemSlotID.Clear();
             gameData.itemIDValue.Clear();
             SaveSettings();
@@ -128,6 +130,7 @@ public class TabGroup : MonoBehaviour
             gameData.sliderValues.Clear();
             gameData.dropdownOptions.Clear();
             gameData.toggleValues.Clear();
+            gameData.toggleConvertedValues.Clear();
             gameData.itemSlotID.Clear();
             gameData.itemIDValue.Clear();
             SaveSettings();
@@ -240,6 +243,9 @@ public class TabGroup : MonoBehaviour
             gridLayout.name = menuOption.tabOption + " panel";
             panelNames.Add(gridLayout.name);
             gridLayout.GetComponent<ScrollRect>().viewport = viewPanel.GetComponent<RectTransform>();
+            gridLayout.GetComponentInChildren<ScrollRect>().content = gridLayout.GetComponent<RectTransform>();
+            gridLayout.GetComponentInChildren<ScrollRect>().verticalScrollbar = gridLayout.transform.parent.GetChild(0).GetComponent<Scrollbar>();
+            gridLayout.GetComponentInChildren<ScrollRect>().verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
             gridLayout.SetActive(false);
             menuPanels.Add(gridLayout);
         }
@@ -249,7 +255,10 @@ public class TabGroup : MonoBehaviour
             panel.transform.parent = viewPanel.transform;
             panel.name = menuOption.tabOption + " panel";
             panelNames.Add(panel.name);
-            panel.GetComponent<ScrollRect>().viewport = viewPanel.GetComponent<RectTransform>();
+            panel.GetComponentInChildren<ScrollRect>().viewport = viewPanel.GetComponent<RectTransform>();
+            panel.GetComponentInChildren<ScrollRect>().content = panel.GetComponent<RectTransform>();
+            panel.GetComponentInChildren<ScrollRect>().verticalScrollbar = panel.transform.parent.GetChild(0).GetComponent<Scrollbar>();
+            panel.GetComponentInChildren<ScrollRect>().verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
             panel.SetActive(false);
             menuPanels.Add(panel);
         }
@@ -282,22 +291,16 @@ public class TabGroup : MonoBehaviour
                     if (uiElement.slider == true)
                     {
                         contentSlider.gameObject.SetActive(true);
-                        content.GetComponent<SettingID>().settingID = settingIndex;
-                        settingIndex++;
                     }
                     else contentSlider.gameObject.SetActive(false);
                     if (uiElement.dropDownMenu == true)
                     {
                         contentDropDown.gameObject.SetActive(true);
-                        content.GetComponent<SettingID>().settingID = settingIndex;
-                        settingIndex++;
                     }
                     else contentDropDown.gameObject.SetActive(false);
                     if (uiElement.toggle == true)
                     {
                         contentToggle.gameObject.SetActive(true);
-                        content.GetComponent<SettingID>().settingID = settingIndex;
-                        settingIndex++;
                     }
                     else contentToggle.gameObject.SetActive(false);
                 }
@@ -464,79 +467,50 @@ public class TabGroup : MonoBehaviour
                             contentPanels.Add(menuPanels[i].transform.GetChild(j).gameObject);
                         }
                     }
-
-                    for (int k = 0; k < contentPanels.Count; k++)
-                    {
-                        for (int l = 0; l < contentPanels[k].transform.childCount; l++)
-                        {
-                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Slider")
-                            {
-                                GameObject slider = contentPanels[k].transform.Find("Slider").gameObject;
-                                if (slider.activeSelf == true)
-                                {
-                                    gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
-                                }
-                            }
-
-                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Dropdown")
-                            {
-                                GameObject dropdown = contentPanels[k].transform.Find("Dropdown").gameObject;
-                                if (dropdown.activeSelf == true)
-                                {
-                                    gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
-                                }
-                            }
-
-                            if (contentPanels[k].transform.GetChild(l).gameObject.name == "Toggle")
-                            {
-                                GameObject toggle = contentPanels[k].transform.Find("Toggle").gameObject;
-                                if (toggle.activeSelf == true)
-                                {
-                                    gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
 
-        //for (int i = 0; i < contentPanels.Count; i++)
-        //{
-        //    for (int j = 0; j < contentPanels[i].transform.childCount; j++)
-        //    {
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
-        //        {
-        //            GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
-        //            if (slider.activeSelf == true)
-        //            {
-        //                gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
-        //            }
-        //        }
+        for (int k = 0; k < contentPanels.Count; k++)
+        {
+            for (int l = 0; l < contentPanels[k].transform.childCount; l++)
+            {
+                if (contentPanels[k].transform.GetChild(l).gameObject.name == "Slider")
+                {
+                    GameObject slider = contentPanels[k].transform.Find("Slider").gameObject;
+                    if (slider.activeSelf == true)
+                    {
+                        gameData.sliderValues.Add(slider.GetComponent<Slider>().value);
+                    }
+                }
 
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
-        //        {
-        //            GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
-        //            if (dropdown.activeSelf == true)
-        //            {
-        //                gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
-        //            }
-        //        }
+                if (contentPanels[k].transform.GetChild(l).gameObject.name == "Dropdown")
+                {
+                    GameObject dropdown = contentPanels[k].transform.Find("Dropdown").gameObject;
+                    if (dropdown.activeSelf == true)
+                    {
+                        gameData.dropdownOptions.Add(dropdown.GetComponent<TMPro.TMP_Dropdown>().value);
+                    }
+                }
 
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
-        //        {
-        //            GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
-        //            if (toggle.activeSelf == true)
-        //            {
-        //                gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
-        //            }
-        //        }
-        //    }
-        //}
+                if (contentPanels[k].transform.GetChild(l).gameObject.name == "Toggle")
+                {
+                    GameObject toggle = contentPanels[k].transform.Find("Toggle").gameObject;
+                    if (toggle.activeSelf == true)
+                    {
+                        gameData.toggleValues.Add(toggle.GetComponent<Toggle>().isOn);
+                    }
+                }
+            }
+        }
     }
 
     public void LoadSettings()
     {
+        int sliderIndex = 0;
+        int toggleIndex = 0;
+        int dropdownIndex = 0;
+
         for (int i = 0; i < menuPanels.Count; i++)
         {
             if (panelNames[i] != null)
@@ -592,73 +566,35 @@ public class TabGroup : MonoBehaviour
 
                 for (int k = 0; k < sliders.Count; k++)
                 {
-                    sliders[k].GetComponent<Slider>().value = gameData.sliderValues[k];
+                    if (sliderIndex < gameData.sliderValues.Count()) //if check used when new item is added and not saved in game data(null check)
+                    {
+                        sliders[k].GetComponent<Slider>().value = gameData.sliderValues[sliderIndex];
+                        sliderIndex++;
+                    }
+                    else return;
                 }
 
                 for (int k = 0; k < toggles.Count; k++)
                 {
-                    toggles[k].GetComponent<Toggle>().isOn = gameData.toggleValues[k];
+                    if (toggleIndex < gameData.toggleValues.Count())
+                    {
+                        toggles[k].GetComponent<Toggle>().isOn = gameData.toggleValues[toggleIndex];
+                        toggleIndex++;
+                    }
+                    else return;
                 }
 
                 for (int k = 0; k < dropdowns.Count; k++)
                 {
-                    dropdowns[k].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[k];
+                    if (dropdownIndex < gameData.dropdownOptions.Count())
+                    {
+                        dropdowns[k].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[dropdownIndex];
+                        dropdownIndex++;
+                    }
+                    else return;
                 }
             }
         }
-
-        //List<GameObject> sliders = new List<GameObject>();
-        //List<GameObject> toggles = new List<GameObject>();
-        //List<GameObject> dropdowns = new List<GameObject>();
-        
-        //for (int i = 0; i < contentPanels.Count; i++)
-        //{
-            
-        //    for (int j = 0; j < contentPanels[i].transform.childCount; j++)
-        //    {
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Slider")
-        //        {
-        //            GameObject slider = contentPanels[i].transform.Find("Slider").gameObject;
-        //            if (slider.activeSelf == true)
-        //            {
-        //                sliders.Add(slider);
-        //            }
-        //        }
-
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Dropdown")
-        //        {
-        //            GameObject dropdown = contentPanels[i].transform.Find("Dropdown").gameObject;
-        //            if (dropdown.activeSelf == true)
-        //            {
-        //                dropdowns.Add(dropdown);
-        //            }
-        //        }
-
-        //        if (contentPanels[i].transform.GetChild(j).gameObject.name == "Toggle")
-        //        {
-        //            GameObject toggle = contentPanels[i].transform.Find("Toggle").gameObject;
-        //            if (toggle.activeSelf == true)
-        //            {
-        //                toggles.Add(toggle);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //for (int i = 0; i < sliders.Count; i++)
-        //{
-        //    sliders[i].GetComponent<Slider>().value = gameData.sliderValues[i];
-        //}
-
-        //for (int i = 0; i < toggles.Count; i++)
-        //{
-        //    toggles[i].GetComponent<Toggle>().isOn = gameData.toggleValues[i];
-        //}
-
-        //for (int i = 0; i < dropdowns.Count; i++)
-        //{
-        //    dropdowns[i].GetComponent<TMPro.TMP_Dropdown>().value = gameData.dropdownOptions[i];
-        //}
     }
 }
 

@@ -4,11 +4,10 @@ Menu/Settings/InGame UI System
 - Fade in tool tip with more details about the option
 - shadow on edges of viewports for scrolling
 
-- create thin scroll bar
 - create battlepass section
 
 - figure out single panel creation button problem based on enum
-- fix multiple settings and controls pages
+- max 12 charcters tab
 
 Examples
 
