@@ -387,13 +387,21 @@
 "Assets/LeanTween/Framework/LTSeq.cs"
 "Assets/Loot Table/Script/LootDrop.cs"
 "Assets/Loot Table/Script/Spawner.cs"
+"Assets/Scripts/BlurPanel.cs"
+"Assets/Scripts/DraggableItem.cs"
 "Assets/Scripts/Dropper.cs"
+"Assets/Scripts/GetGameData.cs"
 "Assets/Scripts/GunTypeLootPool.cs"
+"Assets/Scripts/InventorySlot.cs"
 "Assets/Scripts/MeleeTypeLootPool.cs"
+"Assets/Scripts/MovementRandomiser.cs"
 "Assets/Scripts/RarityLootPool.cs"
+"Assets/Scripts/TabButton.cs"
+"Assets/Scripts/TabGroup.cs"
 "Assets/Scripts/Tooltip.cs"
 "Assets/Scripts/TooltipSystem.cs"
 "Assets/Scripts/TooltipTrigger.cs"
+"Assets/Scripts/UIScriptableObject.cs"
 -langversion:9.0
 
 /deterministic

@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394d1daccd4dd71459891a3a0d45ea01, type: 3}
+  m_Name: TestMenu
+  m_EditorClassIdentifier: 
+  menuOptions:
+  - menuType: 0
+    tabOption: Settings
+    inventorySlots: 0
+    starterItems: []
+    settingsPanelCreation:
+    - header: Settings
+      panelContent:
+      - settingsContentText: Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: Mute
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: NPC Volume
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+    - header: Other Settings
+      panelContent:
+      - settingsContentText: Subtitles
+        slider: 0
+        dropDownMenu: 1
+        toggle: 0
+      - settingsContentText: Field of View
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: Subtitles
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: 
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+      - settingsContentText: '[P] Save Settings'
+        slider: 0
+        dropDownMenu: 0
+        toggle: 0
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 1
+    tabOption: Controls
+    inventorySlots: 0
+    starterItems: []
+    settingsPanelCreation: []
+    controlsPanelCreation:
+    - header: Character Controls
+      panelContent:
+      - controlsContentText: Forward
+        controlKey: W
+      - controlsContentText: Back
+        controlKey: S
+      - controlsContentText: Left
+        controlKey: A
+      - controlsContentText: Right
+        controlKey: D
+      - controlsContentText: Jump
+        controlKey: Space
+      - controlsContentText: Save Settings
+        controlKey: P
+      - controlsContentText: Reset Settings
+        controlKey: R
+    battlepassPanelCreation: []
+  - menuType: 2
+    tabOption: Inventory
+    inventorySlots: 48
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 2
+    tabOption: Equipment
+    inventorySlots: 24
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation: []
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
+  - menuType: 0
+    tabOption: PlayerSettin
+    inventorySlots: 24
+    starterItems:
+    - {fileID: 1490343283371307828, guid: ec2506a1b2f0eb646bcd1c4c4802c12b, type: 3}
+    - {fileID: 4076833959804770617, guid: 1992d43bbbc603349b7eb70ed0b993e2, type: 3}
+    - {fileID: 6246298422159597999, guid: c70c30bfda403f24ea2f8efa1cfe6d57, type: 3}
+    - {fileID: 3487992697380288424, guid: 8da7ef7f4511a244e8ba8c819cc5dc47, type: 3}
+    settingsPanelCreation:
+    - header: more settings
+      panelContent:
+      - settingsContentText: safdsf
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+      - settingsContentText: hfgrfg
+        slider: 1
+        dropDownMenu: 0
+        toggle: 0
+    controlsPanelCreation: []
+    battlepassPanelCreation: []
