@@ -28,7 +28,15 @@ MonoBehaviour:
         slider: 0
         dropDownMenu: 0
         toggle: 1
-      - settingsContentText: NPC Volume
+      - settingsContentText: Test Setting
+        slider: 0
+        dropDownMenu: 1
+        toggle: 0
+      - settingsContentText: Test Setting
+        slider: 0
+        dropDownMenu: 0
+        toggle: 1
+      - settingsContentText: Another Test
         slider: 1
         dropDownMenu: 0
         toggle: 0
@@ -36,21 +44,13 @@ MonoBehaviour:
         slider: 1
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: NPC Volume
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-      - settingsContentText: NPC Volume
-        slider: 1
-        dropDownMenu: 0
-        toggle: 0
-      - settingsContentText: NPC Volume
-        slider: 1
+      - settingsContentText: 
+        slider: 0
         dropDownMenu: 0
         toggle: 0
     - header: Other Settings
       panelContent:
-      - settingsContentText: Subtitles
+      - settingsContentText: Subtitle Language
         slider: 0
         dropDownMenu: 1
         toggle: 0
@@ -74,23 +74,23 @@ MonoBehaviour:
         slider: 0
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: '[P] Save Settings'
+      - settingsContentText: 
         slider: 0
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: '[P] Save Settings'
+      - settingsContentText: 
         slider: 0
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: '[P] Save Settings'
+      - settingsContentText: 
         slider: 0
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: '[P] Save Settings'
+      - settingsContentText: 
         slider: 0
         dropDownMenu: 0
         toggle: 0
-      - settingsContentText: '[P] Save Settings'
+      - settingsContentText: 
         slider: 0
         dropDownMenu: 0
         toggle: 0
